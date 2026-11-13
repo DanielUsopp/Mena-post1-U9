@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar tareas</title>
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+  <h1>Buscar tareas por título</h1>
+  <form th:action="@{/tareas/buscar}" method="get">
+    <label>Texto: <input type="text" name="texto" th:value="${texto}" /></label>
+    <button type="submit">Buscar</button>
+  </form>
+  <!-- El texto buscado también se muestra con th:text (escapado) -->
+  <p th:if="${!#strings.isEmpty(texto)}">Resultados para: <strong th:text="${texto}"></strong>
+     (<span th:text="${#lists.size(resultados)}"></span> encontradas)</p>
+  <table>
+    <thead><tr><th>Id</th><th>Título</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr th:each="t : ${resultados}">
+        <td th:text="${t.id}"></td>
+        <td th:text="${t.titulo}"></td>
+        <td th:text="${t.descripcion}"></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(resultados)}"><td colspan="3">No se encontraron tareas.</td></tr>
+    </tbody>
+  </table>
+  <p><a th:href="@{/dashboard}">Volver al dashboard</a></p>
+</body>
+</html>
